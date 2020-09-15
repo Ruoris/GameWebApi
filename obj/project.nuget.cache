@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "mwVHbiF1kqEUe4Nc6uLOjcPs0ipAAVAVt2nEz5LqC5Nxq+Fnj8ZpP4FKNxUmWX1dzmqNYgwaeGtBYOh1KCoJEQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\tonir\\Documents\\GameWebApi\\GameWebApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tonir\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
