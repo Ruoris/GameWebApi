@@ -20,42 +20,71 @@ namespace GameWebApi.Controllers
             _repository = repository;
         }
         [HttpGet]
-        [Route("{id}")]
-        public Task<Player> Get(Guid id)
+        [Route("{id:Guid}")]
+        public async Task<Player> Get(Guid id)
         {
-            return _repository.Get(id);
+            return await _repository.Get(id);
+        }
+
+        [HttpGet]
+        public async Task<Player[]> GetAll()
+        {
+            return await _repository.GetAll();
         }
         [HttpGet]
-        [Route("Getall")]
-        public Task<Player[]> GetAll()
+        [Route("Minscore/{score:int:min(0)}")]
+        public async Task<List<Player>> Ranges(int score)
         {
-            return _repository.GetAll();
+            return await _repository.Ranges(score);
+        }
+        [HttpGet]
+        [Route("sorting")]
+        public async Task<List<Player>> Sorting()
+        {
+            return await _repository.Sorting();
+        }
+        [HttpGet]
+        [Route("Subzero/{type:ItemType")]
+        public async Task<List<Player>> Subzero(ItemType type)
+        {
+            return await _repository.Subzero(type);
+        }
+        [HttpGet]
+        [Route("{name}")]
+        public async Task<Player> Skeletor(string name)
+        {
+            return await _repository.Skeletor(name);
+        }
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<Player> Skeletor2(Guid id)
+        {
+            return await _repository.Skeletor2(id);
+        }
+        [HttpPost]
+        public async Task<Player> Create([FromBody] NewPlayer newplayer)
+        {
+            Player _player = new Player();
+            _player.Id = Guid.NewGuid();
+            _player.Name = newplayer.Name;
+            _player.CreationTime = DateTime.UtcNow;
+
+            await _repository.Create(_player);
+            return _player;
         }
 
         [HttpPost]
-        [Route("Create")]
-
-        public Task<Player> Create([FromBody] NewPlayer player)
+        [Route("modify/{id:Guid}")]
+        public async Task<Player> Modify(Guid id, [FromBody] ModifiedPlayer player)
         {
-            Player newPlayer = new Player() { Id = Guid.NewGuid(), Name = player.Name };
-
-            return _repository.Create(newPlayer);
+            return await _repository.Modify(id, player);
         }
-        // [HttpPost]
-        // [Route("Modify")]
-        // public Task<Player> Modify([FromBody] Guid id, [FromBody] ModifiedPlayer player)
-        // {
-        //     return _repository.Modify(id, player);
-        // }
-        [HttpPost]
-        [Route("Delete")]
-        public Task<Player> Delete([FromBody] Guid id)
+
+        [HttpDelete]
+        [Route("delete/{id:Guid}")]
+        public async Task<Player> Delete(Guid id)
         {
-            return _repository.Delete(id);
+            return await _repository.Delete(id);
         }
     }
-
-
 }
-
-

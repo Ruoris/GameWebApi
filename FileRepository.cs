@@ -9,134 +9,185 @@ using System.Text;
 using System.Collections.Generic;
 public class Ratkaisija
 {
-    public Player[] PlayerLista { get; set; }
-    public Ratkaisija(Player[] pelaajaLista)
-    {
-        PlayerLista = pelaajaLista;
-    }
+    public List<Player> playerLista = new List<Player>();
 
 }
 public class FileRepository : IRepository
 {
-    string path = @"c:\Users\tonir\Documents\GameWebApi\game-dev.txt";
-    public Task<Player> Get(Guid id)
+
+
+    public async Task<Player> Create(Player player)
     {
-        string jsonToBeDeserialized = System.IO.File.ReadAllText(path);
-        List<Player> players = JsonConvert.DeserializeObject<List<Player>>(jsonToBeDeserialized);
-        Player foundPlayer = new Player();
-        foreach (Player player in players)
+        Ratkaisija players = await ReadFile();
+        players.playerLista.Add(player);
+        File.WriteAllText("game-dev.txt", JsonConvert.SerializeObject(players));
+        return player;
+    }
+
+    public async Task<Item> CreateItem(Guid playerId, Item item)
+    {
+        Ratkaisija players = await ReadFile();
+        Player playerToGetItem = new Player();
+        for (int i = 0; i < players.playerLista.Count; i++)
+        {
+            if (players.playerLista[i].Id == playerId)
+            {
+                playerToGetItem = players.playerLista[i];
+            }
+        }
+        if (playerToGetItem.itemList == null)
+            playerToGetItem.itemList = new List<Item>();
+        playerToGetItem.itemList.Add(item);
+        File.WriteAllText("game-dev.txt", JsonConvert.SerializeObject(players));
+        return item;
+    }
+
+    public async Task<Item> GetItem(Guid playerId, Guid itemId)
+    {
+        Ratkaisija players = await ReadFile();
+        Item itemToGet = new Item();
+        for (int i = 0; i < players.playerLista.Count; i++)
+        {
+            if (players.playerLista[i].Id == playerId)
+            {
+                for (int j = 0; j < players.playerLista[i].itemList.Count; j++)
+                {
+                    if (players.playerLista[i].itemList[j].itemId == itemId)
+                    {
+                        itemToGet = players.playerLista[i].itemList[j];
+                        return itemToGet;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    public async Task<Item> DeleteItem(Guid playerId, Guid itemId)
+    {
+        Ratkaisija players = await ReadFile();
+        Item itemToRemove = new Item();
+        for (int i = 0; i < players.playerLista.Count; i++)
+        {
+            if (players.playerLista[i].Id == playerId)
+            {
+                for (int j = 0; j < players.playerLista[i].itemList.Count; j++)
+                {
+                    if (players.playerLista[i].itemList[j].itemId == itemId)
+                    {
+                        itemToRemove = players.playerLista[i].itemList[j];
+                        players.playerLista[i].itemList.RemoveAt(j);
+                        File.WriteAllText("game-dev.txt", JsonConvert.SerializeObject(players));
+                        return itemToRemove;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public async Task<Item[]> GetAllItems(Guid playerId)
+    {
+        Ratkaisija players = await ReadFile();
+        for (int i = 0; i < players.playerLista.Count; i++)
+        {
+            if (players.playerLista[i].Id == playerId)
+            {
+                return players.playerLista[i].itemList.ToArray();
+            }
+        }
+        return null;
+    }
+
+    public async Task<Item> UpdateItem(Guid playerId, Guid itemId, ModifiedItem item)
+    {
+        Ratkaisija players = await ReadFile();
+
+        for (int i = 0; i < players.playerLista.Count; i++)
+        {
+            if (players.playerLista[i].Id == playerId)
+            {
+                for (int j = 0; j < players.playerLista[i].itemList.Count; j++)
+                {
+                    if (players.playerLista[i].itemList[j].itemId == itemId)
+                    {
+                        players.playerLista[i].itemList[j].level = item.level; // tässä nyt on päätetty että updateitemilla muutetaan itemin leveliä
+                        File.WriteAllText("game-dev.txt", JsonConvert.SerializeObject(players));
+                        return players.playerLista[i].itemList[j];
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public async Task<Player> Delete(Guid id)
+    {
+        Ratkaisija players = await ReadFile();
+
+        Player playerToDelete = new Player();
+        for (int i = 0; i < players.playerLista.Count; i++)
+        {
+            if (players.playerLista[i].Id == id)
+            {
+                playerToDelete = players.playerLista[i];
+                players.playerLista.RemoveAt(i);
+                File.WriteAllText("game-dev.txt", JsonConvert.SerializeObject(players));
+                return playerToDelete;
+            }
+        }
+
+        return null;
+    }
+
+    public async Task<Player> Get(Guid id)
+    {
+        Ratkaisija players = await ReadFile();
+
+        Player playerToGet = new Player();
+        foreach (Player player in players.playerLista)
         {
             if (player.Id == id)
             {
-                foundPlayer = player;
-                return Task.FromResult<Player>(foundPlayer);
+                playerToGet = player;
+                return playerToGet;
             }
-
         }
-        foundPlayer.Name = "not Found";
-        return Task.FromResult<Player>(foundPlayer);
+        return null;
+    }
+
+    public async Task<Player[]> GetAll()
+    {
+        Ratkaisija players = await ReadFile();
+        return players.playerLista.ToArray();
     }
 
 
 
-    public Task<Player[]> GetAll()
+    public async Task<Player> Modify(Guid id, ModifiedPlayer player)
     {
-        string jsonToBeDeserialized = System.IO.File.ReadAllText(path);
-        Ratkaisija players = JsonConvert.DeserializeObject<Ratkaisija>(jsonToBeDeserialized);
-        Player[] players1 = players.PlayerLista;
-        // Console.WriteLine(players1[0].Name);
-        return Task.FromResult<Player[]>(players1);
-    }
-    public Task<Player> Create(Player player)
-    {
-        Player[] players1;
-        string jsonToBeDeserialized = System.IO.File.ReadAllText(path);
-        if (jsonToBeDeserialized.Length > 0)
+        Ratkaisija players = await ReadFile();
+        Player playerToModify = new Player();
+        foreach (Player oldplayer in players.playerLista)
         {
-            Ratkaisija players = JsonConvert.DeserializeObject<Ratkaisija>(jsonToBeDeserialized);
-            players1 = new Player[players.PlayerLista.Length + 2];
-            var newlycreatedPlayer = new Player
+            if (oldplayer.Id == id)
             {
-                Id = player.Id,
-                Name = player.Name,
-                Score = 0,
-                Level = 0,
-                IsBanned = false,
-                CreationTime = DateTime.Now
-            };
-            players1 = players.PlayerLista;
-            players1[players.PlayerLista.Length] = newlycreatedPlayer;
-            Ratkaisija newplayers = new Ratkaisija(players1);
-            string output = JsonConvert.SerializeObject(newplayers);
-            File.WriteAllText(path, output);
-
-            return Task.FromResult<Player>(newlycreatedPlayer);
-        }
-
-        else
-        {
-            players1 = new Player[1000];
-
-            var newlycreatedPlayer = new Player
-            {
-                Id = player.Id,
-                Name = player.Name,
-                Score = 0,
-                Level = 0,
-                IsBanned = false,
-                CreationTime = DateTime.Now
-            };
-
-            players1[0] = newlycreatedPlayer;
-            Ratkaisija newplayers = new Ratkaisija(players1);
-            string output = JsonConvert.SerializeObject(newplayers);
-            File.WriteAllText(path, output);
-
-            return Task.FromResult<Player>(newlycreatedPlayer);
-        }
-
-
-
-    }
-    public Task<Player> Modify(Guid id, ModifiedPlayer player)
-    {
-        string jsonToBeDeserialized = System.IO.File.ReadAllText(path);
-        List<Player> players = JsonConvert.DeserializeObject<List<Player>>(jsonToBeDeserialized);
-        Player foundPlayer = new Player();
-        foreach (Player playeri in players)
-        {
-            if (playeri.Id == id)
-            {   //foundPlayer
-                playeri.Score = player.Score;
-                string output = JsonConvert.SerializeObject(players);
-                File.WriteAllText(path, output);
-                return Task.FromResult<Player>(playeri);
+                oldplayer.Score = player.Score;
+                playerToModify = oldplayer;
+                File.WriteAllText("game-dev.txt", JsonConvert.SerializeObject(players));
             }
-
         }
-        foundPlayer.Name = "not Found";
-        return Task.FromResult<Player>(foundPlayer);
-
+        return playerToModify;
     }
-    public Task<Player> Delete(Guid id)
+    public async Task<Ratkaisija> ReadFile()
     {
-        string jsonToBeDeserialized = System.IO.File.ReadAllText(path);
-        List<Player> players = JsonConvert.DeserializeObject<List<Player>>(jsonToBeDeserialized);
-        Player foundPlayer = new Player();
-        foreach (Player playeri in players)
-        {
-            if (playeri.Id == id)
-            {
-                foundPlayer = playeri;
-                players.Remove(playeri);
-                string output = JsonConvert.SerializeObject(players);
-                File.WriteAllText(path, output);
-                return Task.FromResult<Player>(foundPlayer);
-            }
+        var players = new Ratkaisija();
+        string json = await File.ReadAllTextAsync("game-dev.txt");
 
+        if (File.ReadAllText("game-dev.txt").Length != 0)
+        {
+            return JsonConvert.DeserializeObject<Ratkaisija>(json);
         }
-        foundPlayer.Name = "not Found";
-        return Task.FromResult<Player>(foundPlayer);
+        return players;
     }
 
 
