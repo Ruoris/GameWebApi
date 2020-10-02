@@ -132,7 +132,7 @@ public class MongoDbRepository : IRepository
     }
     public async Task<List<Player>> Sorting()
     {
-        SortDefinition<Player> sortDef = Builders<Player>.Sort.Ascending("Score");
+        SortDefinition<Player> sortDef = Builders<Player>.Sort.Descending("Score");
 
         IFindFluent<Player, Player> cursor =
             _playerCollection.Find("").Sort(sortDef).Limit(10);
