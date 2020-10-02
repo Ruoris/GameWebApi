@@ -4755,7 +4755,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "MongoDb.Driver >= *",
+      "MongoDb.Driver >= 2.11.2",
       "NewtonSoft.Json >= 12.0.3"
     ]
   },
@@ -4802,7 +4802,7 @@
         "dependencies": {
           "MongoDb.Driver": {
             "target": "Package",
-            "version": "[*, )"
+            "version": "[2.11.2, )"
           },
           "NewtonSoft.Json": {
             "target": "Package",
