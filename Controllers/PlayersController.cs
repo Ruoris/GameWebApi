@@ -20,71 +20,97 @@ namespace GameWebApi.Controllers
             _repository = repository;
         }
         [HttpGet]
-        [Route("{id:Guid}")]
-        public async Task<Player> Get(Guid id)
+        [Route("getbyName/{name}")]
+        public async Task<Player> Get(string name)
         {
-            return await _repository.Get(id);
+            return await _repository.Get(name);
         }
+        [HttpGet]
+        [Route("GetallFromplayer/{namer}")]
+        public async Task<List<Player>> GetAllFromPlayer(string namer)
+        {
+
+            return await _repository.GetAllFromPlayer(namer);
+        }
+
 
         [HttpGet]
         public async Task<Player[]> GetAll()
         {
             return await _repository.GetAll();
         }
-        [HttpGet]
-        [Route("Minscore/{score:int:min(0)}")]
-        public async Task<List<Player>> Ranges(int score)
-        {
-            return await _repository.Ranges(score);
-        }
+        // [HttpGet]
+        // [Route("Minscore/{score:int:min(0)}")]
+        // public Task<List<Player>> Ranges(int score)
+        // {
+        //     return _repository.Ranges(score);
+        // }
         [HttpGet]
         [Route("sorting")]
         public async Task<List<Player>> Sorting()
         {
             return await _repository.Sorting();
         }
-        [HttpGet]
-        [Route("Subzero/{type:ItemType")]
-        public async Task<List<Player>> Subzero(ItemType type)
-        {
-            return await _repository.Subzero(type);
-        }
-        [HttpGet]
-        [Route("{name}")]
-        public async Task<Player> Skeletor(string name)
-        {
-            return await _repository.Skeletor(name);
-        }
-        [HttpGet]
-        [Route("{id:Guid}")]
-        public async Task<Player> Skeletor2(Guid id)
-        {
-            return await _repository.Skeletor2(id);
-        }
+        // [HttpGet]
+        // [Route("Subzero/{type:int}")]
+        // public async Task<List<Player>> Subzero(int type)
+        // {
+        //     ItemType itemtype = new ItemType();
+        //     if (type == 0)
+        //     {
+        //         itemtype = ItemType.SWORD;
+        //     }
+        //     if (type == 1)
+        //     {
+        //         itemtype = ItemType.POTION;
+        //     }
+        //     if (type == 2)
+        //     {
+        //         itemtype = ItemType.SHIELD;
+        //     }
+        //     return await _repository.Subzero(itemtype);
+        // }
+        // [HttpGet]
+        // [Route("name/{name}")]
+        // public Task<Player> Skeletor(string name)
+        // {
+        //     return _repository.Skeletor(name);
+        // }
+        // [HttpGet]
+        // [Route("name/{id:Guid}")]
+        // public async Task<Player> Skeletor2(Guid id)
+        // {
+        //     return await _repository.Skeletor2(id);
+        // }
         [HttpPost]
-        public async Task<Player> Create([FromBody] NewPlayer newplayer)
+        public async Task<Player> Create([FromBody] Player player)
         {
             Player _player = new Player();
             _player.Id = Guid.NewGuid();
-            _player.Name = newplayer.Name;
+            _player.namer = player.namer;
+            _player.UserName = player.UserName;
+            _player.Score = player.Score;
+            _player.Time = player.Time;
+            _player.FloorsCleared = player.FloorsCleared;
+            _player.EnemiesKilled = player.EnemiesKilled;
             _player.CreationTime = DateTime.UtcNow;
 
             await _repository.Create(_player);
             return _player;
         }
 
-        [HttpPost]
-        [Route("modify/{id:Guid}")]
-        public async Task<Player> Modify(Guid id, [FromBody] ModifiedPlayer player)
-        {
-            return await _repository.Modify(id, player);
-        }
+        // [HttpPost]
+        // [Route("modify/{id:Guid}")]
+        // public async Task<Player> Modify(Guid id, [FromBody] ModifiedPlayer player)
+        // {
+        //     return await _repository.Modify(id, player);
+        // }
 
-        [HttpDelete]
-        [Route("delete/{id:Guid}")]
-        public async Task<Player> Delete(Guid id)
-        {
-            return await _repository.Delete(id);
-        }
+        // [HttpDelete]
+        // [Route("delete/{id:Guid}")]
+        // public async Task<Player> Delete(Guid id)
+        // {
+        //     return await _repository.Delete(id);
+        // }
     }
 }
