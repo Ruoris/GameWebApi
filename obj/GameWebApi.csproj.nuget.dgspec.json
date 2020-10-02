@@ -43,7 +43,7 @@
           "dependencies": {
             "MongoDb.Driver": {
               "target": "Package",
-              "version": "[2.11.2, )"
+              "version": "[*, )"
             },
             "NewtonSoft.Json": {
               "target": "Package",

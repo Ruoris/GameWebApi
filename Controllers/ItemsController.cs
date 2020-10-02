@@ -18,46 +18,46 @@ namespace teht3.Controllers
             _repository = repository;
         }
 
-        // [HttpGet]
-        // [Route("{itemId:Guid}")]
-        // public async Task<Item> GetItem(Guid playerId, Guid itemId)
-        // {
-        //     return await _repository.GetItem(playerId, itemId);
-        // }
+        [HttpGet]
+        [Route("{itemId:Guid}")]
+        public async Task<Item> GetItem(Guid playerId, Guid itemId)
+        {
+            return await _repository.GetItem(playerId, itemId);
+        }
 
-        // [HttpGet]
-        // // [Route("{playerId:Guid}")]
+        [HttpGet]
+        // [Route("{playerId:Guid}")]
 
-        // public async Task<Item[]> GetAllItems(Guid playerId)
-        // {
-        //     return await _repository.GetAllItems(playerId);
-        // }
+        public async Task<Item[]> GetAllItems(Guid playerId)
+        {
+            return await _repository.GetAllItems(playerId);
+        }
 
-        // [HttpPost]
-        // //[Route("{playerId:Guid}")]
-        // public async Task<Item> CreateItem(Guid playerId, [FromBody] NewItem newItem)
-        // {
-        //     Item _item = new Item();
-        //     _item.itemId = Guid.NewGuid();
-        //     _item.creationDate = DateTime.UtcNow;
-        //     _item.level = newItem.level;
-        //     _item.type = newItem.type;
+        [HttpPost]
+        //[Route("{playerId:Guid}")]
+        public async Task<Item> CreateItem(Guid playerId, [FromBody] NewItem newItem)
+        {
+            Item _item = new Item();
+            _item.itemId = Guid.NewGuid();
+            _item.creationDate = DateTime.UtcNow;
+            _item.level = newItem.level;
+            _item.type = newItem.type;
 
-        //     return await _repository.CreateItem(playerId, _item);
-        // }
+            return await _repository.CreateItem(playerId, _item);
+        }
 
-        // [HttpPost]
-        // [Route("modify/{itemId:Guid}")]
-        // public async Task<Item> UpdateItem(Guid playerId, Guid itemId, [FromBody] ModifiedItem item)
-        // {
-        //     return await _repository.UpdateItem(playerId, itemId, item);
-        // }
+        [HttpPost]
+        [Route("modify/{itemId:Guid}")]
+        public async Task<Item> UpdateItem(Guid playerId, Guid itemId, [FromBody] ModifiedItem item)
+        {
+            return await _repository.UpdateItem(playerId, itemId, item);
+        }
 
-        // [HttpDelete]
-        // [Route("{itemId:Guid}")]
-        // public async Task<Item> DeleteItem(Guid playerId, Guid itemId)
-        // {
-        //     return await _repository.DeleteItem(playerId, itemId);
-        // }
+        [HttpDelete]
+        [Route("{itemId:Guid}")]
+        public async Task<Item> DeleteItem(Guid playerId, Guid itemId)
+        {
+            return await _repository.DeleteItem(playerId, itemId);
+        }
     }
 }
