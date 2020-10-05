@@ -8,10 +8,10 @@ public class Player
     public Guid Id { get; set; }
     public string namer { get; set; }
     public string UserName { get; set; }
-    public float Score { get; set; }
+    public int Score { get; set; }
     public int EnemiesKilled { get; set; }
     public string Time { get; set; }
-
+    public float TimeInFloat { get; set; }
     public int FloorsCleared { get; set; }
 
     // public Guid Id { get; set; }

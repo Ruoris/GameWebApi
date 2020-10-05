@@ -26,6 +26,101 @@ public class MongoDbRepository : IRepository
         return player;
     }
 
+
+    public async Task<List<Player>> GetFromPlayerByFloor(string namer)
+    {
+        SortDefinition<Player> sortDef = Builders<Player>.Sort.Descending("FloorsCleared");
+        var filter = Builders<Player>.Filter.Eq(p => p.namer, namer);
+        IFindFluent<Player, Player> cursor =
+            _playerCollection.Find(filter).Sort(sortDef);
+
+        List<Player> plauers = await cursor.ToListAsync();
+        // plauers.Sort()
+        return plauers;
+
+    }
+    public async Task<List<Player>> GetAllByEnemiesKilled()
+    {
+        SortDefinition<Player> sortDef = Builders<Player>.Sort.Descending("EnemiesKilled");
+        var filter = Builders<Player>.Filter.Empty;
+        IFindFluent<Player, Player> cursor =
+            _playerCollection.Find(filter).Sort(sortDef);
+
+        List<Player> plauers = await cursor.ToListAsync();
+        // plauers.Sort()
+        return plauers;
+    }
+    public async Task<List<Player>> GetAllByFloor()
+    {
+        SortDefinition<Player> sortDef = Builders<Player>.Sort.Descending("FloorsCleared");
+        var filter = Builders<Player>.Filter.Empty;
+        IFindFluent<Player, Player> cursor =
+            _playerCollection.Find(filter).Sort(sortDef);
+
+        List<Player> plauers = await cursor.ToListAsync();
+        // plauers.Sort()
+        return plauers;
+
+    }
+    public async Task<List<Player>> GetAllByScore()
+    {
+        SortDefinition<Player> sortDef = Builders<Player>.Sort.Descending("Score");
+        var filter = Builders<Player>.Filter.Empty;
+        IFindFluent<Player, Player> cursor =
+            _playerCollection.Find(filter).Sort(sortDef);
+
+        List<Player> plauers = await cursor.ToListAsync();
+        // plauers.Sort()
+        return plauers;
+
+    }
+    public async Task<List<Player>> GetAllByTime()
+    {
+        SortDefinition<Player> sortDef = Builders<Player>.Sort.Descending("TimeInFloat");
+        var filter = Builders<Player>.Filter.Empty;
+        IFindFluent<Player, Player> cursor =
+            _playerCollection.Find(filter).Sort(sortDef);
+
+        List<Player> plauers = await cursor.ToListAsync();
+        // plauers.Sort()
+        return plauers;
+
+    }
+
+    public async Task<List<Player>> GetFromPlayerByScore(string namer)
+    {
+        SortDefinition<Player> sortDef = Builders<Player>.Sort.Descending("Score");
+        var filter = Builders<Player>.Filter.Eq(p => p.namer, namer);
+        IFindFluent<Player, Player> cursor =
+            _playerCollection.Find(filter).Sort(sortDef);
+
+        List<Player> plauers = await cursor.ToListAsync();
+        // plauers.Sort()
+        return plauers;
+
+    }
+    public async Task<List<Player>> GetFromPlayerByTime(string namer)
+    {
+        SortDefinition<Player> sortDef = Builders<Player>.Sort.Descending("TimeInFloat");
+        var filter = Builders<Player>.Filter.Eq(p => p.namer, namer);
+        IFindFluent<Player, Player> cursor =
+            _playerCollection.Find(filter).Sort(sortDef);
+
+        List<Player> plauers = await cursor.ToListAsync();
+        // plauers.Sort()
+        return plauers;
+    }
+    public async Task<List<Player>> GetFromPlayerByEnemiesKilled(string namer)
+    {
+        SortDefinition<Player> sortDef = Builders<Player>.Sort.Descending("EnemiesKilled");
+        var filter = Builders<Player>.Filter.Eq(p => p.namer, namer);
+        IFindFluent<Player, Player> cursor =
+            _playerCollection.Find(filter).Sort(sortDef);
+
+        List<Player> plauers = await cursor.ToListAsync();
+        // plauers.Sort()
+        return plauers;
+    }
     // public async Task<Item> CreateItem(Guid playerId, Item item)
     // {
     //     var filter = Builders<Player>.Filter.Eq(p => p.Id, playerId);

@@ -26,12 +26,66 @@ namespace GameWebApi.Controllers
             return await _repository.Get(name);
         }
         [HttpGet]
-        [Route("GetallFromplayer/{namer}")]
-        public async Task<List<Player>> GetAllFromPlayer(string namer)
+        [Route("Getfromplayerbyfloor/{namer}")]
+        public async Task<List<Player>> GetFromPlayerByFloor(string namer)
         {
 
-            return await _repository.GetAllFromPlayer(namer);
+            return await _repository.GetFromPlayerByFloor(namer);
         }
+        [HttpGet]
+        [Route("Getfromplayerbyscore/{namer}")]
+        public async Task<List<Player>> GetFromPlayerByScore(string namer)
+        {
+
+            return await _repository.GetFromPlayerByScore(namer);
+        }
+
+        [HttpGet]
+        [Route("Getfromplayerbyenemieskilled/{namer}")]
+        public async Task<List<Player>> GetFromPlayerByEnemiesKilled(string namer)
+        {
+
+            return await _repository.GetFromPlayerByEnemiesKilled(namer);
+        }
+
+        [HttpGet]
+        [Route("Getfromplayerbytime/{namer}")]
+        public async Task<List<Player>> GetFromPlayerByTime(string namer)
+        {
+
+            return await _repository.GetFromPlayerByTime(namer);
+        }
+        [HttpGet]
+        [Route("Getallbyfloor")]
+        public async Task<List<Player>> GetAllbyByFloor()
+        {
+
+            return await _repository.GetAllByFloor();
+        }
+        [HttpGet]
+        [Route("Getallbyscore")]
+        public async Task<List<Player>> GetAllByScore()
+        {
+
+            return await _repository.GetAllByScore();
+        }
+
+        [HttpGet]
+        [Route("Getallbyenemieskilled")]
+        public async Task<List<Player>> GetAllByEnemiesKilled()
+        {
+
+            return await _repository.GetAllByEnemiesKilled();
+        }
+
+        [HttpGet]
+        [Route("Getallbytime")]
+        public async Task<List<Player>> GetAllByTime()
+        {
+
+            return await _repository.GetAllByTime();
+        }
+
 
 
         [HttpGet]
@@ -86,11 +140,12 @@ namespace GameWebApi.Controllers
         public async Task<Player> Create([FromBody] Player player)
         {
             Player _player = new Player();
-            _player.Id = Guid.NewGuid();
+            _player.Id = player.Id;
             _player.namer = player.namer;
             _player.UserName = player.UserName;
             _player.Score = player.Score;
             _player.Time = player.Time;
+            _player.TimeInFloat = player.TimeInFloat;
             _player.FloorsCleared = player.FloorsCleared;
             _player.EnemiesKilled = player.EnemiesKilled;
             _player.CreationTime = DateTime.UtcNow;

@@ -10,7 +10,15 @@ public interface IRepository
     Task<Player> Get(string name);
     Task<Player[]> GetAll();
 
-    Task<List<Player>> GetAllFromPlayer(string name);
+
+    Task<List<Player>> GetAllByEnemiesKilled();
+    Task<List<Player>> GetAllByFloor();
+    Task<List<Player>> GetAllByScore();
+    Task<List<Player>> GetAllByTime();
+    Task<List<Player>> GetFromPlayerByFloor(string name);
+    Task<List<Player>> GetFromPlayerByScore(string name);
+    Task<List<Player>> GetFromPlayerByTime(string name);
+    Task<List<Player>> GetFromPlayerByEnemiesKilled(string name);
     Task<Player> Create(Player player);
     // Task<Player> Modify(Guid id, ModifiedPlayer player);
     // Task<Player> Delete(Guid id);
